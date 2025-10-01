@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*.pyc
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Node
+frontend/node_modules/
+frontend/.npm/
+frontend/dist/
+
+# Env files
+.env
+.env.*
+frontend/.env
+
+# OS
+.DS_Store
+
+# Coverage / logs
+coverage/
+*.log
