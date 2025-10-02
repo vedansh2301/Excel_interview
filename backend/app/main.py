@@ -31,6 +31,11 @@ async def health_check() -> dict[str, str]:
     return {"status": "ok"}
 
 
+@app.get("/")
+async def root() -> dict[str, str]:
+    return {"status": "running"}
+
+
 @app.on_event("startup")
 async def on_startup() -> None:
     database = await connect_to_mongo()
