@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import JSONResponse
 
 from app.models.tools import (
     FinalizeSessionResponse,
@@ -20,6 +21,11 @@ from app.services.orchestrator import orchestrator_service
 from app.services.graders import formula_grader, objective_grader, rubric_grader
 
 router = APIRouter(prefix="/tools", tags=["tools"])
+
+
+@router.options("/get_next_question")
+async def options_get_next_question() -> JSONResponse:
+    return JSONResponse(status_code=200, content={})
 
 
 @router.post("/get_next_question", response_model=GetNextQuestionResponse)
@@ -89,6 +95,11 @@ async def get_next_question(payload: SessionPayload) -> dict:
     }
 
 
+@router.options("/grade_answer")
+async def options_grade_answer() -> JSONResponse:
+    return JSONResponse(status_code=200, content={})
+
+
 @router.post("/grade_answer", response_model=GradeAnswerResponse)
 async def grade_answer(payload: GradeAnswerPayload) -> GradeAnswerResponse:
     # TODO: Route to appropriate grader based on question type
@@ -111,6 +122,11 @@ async def grade_answer(payload: GradeAnswerPayload) -> GradeAnswerResponse:
             }
         )
     return GradeAnswerResponse(**result)
+
+
+@router.options("/record_outcome")
+async def options_record_outcome() -> JSONResponse:
+    return JSONResponse(status_code=200, content={})
 
 
 @router.post("/record_outcome", response_model=RecordOutcomeResponse)
@@ -171,10 +187,20 @@ async def record_outcome(payload: RecordOutcomePayload) -> RecordOutcomeResponse
     return RecordOutcomeResponse(ok=True, rating_summary=rating_summary)
 
 
+@router.options("/update_difficulty")
+async def options_update_difficulty() -> JSONResponse:
+    return JSONResponse(status_code=200, content={})
+
+
 @router.post("/update_difficulty", response_model=UpdateDifficultyResponse)
 async def update_difficulty(payload: SessionPayload) -> UpdateDifficultyResponse:
     result = await difficulty_service.update_difficulty(payload.session_id)
     return UpdateDifficultyResponse(new_level=result.new_level, rationale=result.rationale)
+
+
+@router.options("/finalize_session")
+async def options_finalize_session() -> JSONResponse:
+    return JSONResponse(status_code=200, content={})
 
 
 @router.post("/finalize_session", response_model=FinalizeSessionResponse)
@@ -205,6 +231,11 @@ async def finalize_session(payload: SessionPayload) -> FinalizeSessionResponse:
         f"Focus areas: {', '.join(growth_text)}."
     )
     return FinalizeSessionResponse(report_url=f"https://reports.example.com/{payload.session_id}", summary=summary)
+
+
+@router.options("/log_interaction")
+async def options_log_interaction() -> JSONResponse:
+    return JSONResponse(status_code=200, content={})
 
 
 @router.post("/log_interaction", response_model=LogInteractionResponse)

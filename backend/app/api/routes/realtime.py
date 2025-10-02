@@ -4,11 +4,17 @@ import httpx
 import logging
 
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import JSONResponse
 
 from app.core.config import settings
 
 router = APIRouter(prefix="/realtime", tags=["realtime"])
 logger = logging.getLogger(__name__)
+
+
+@router.options("/session-token")
+async def options_session_token() -> JSONResponse:
+    return JSONResponse(status_code=200, content={})
 
 
 @router.post("/session-token")
