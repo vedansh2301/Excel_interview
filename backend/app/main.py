@@ -12,14 +12,22 @@ app = FastAPI(title=settings.project_name)
 app.include_router(tools.router, prefix=settings.api_v1_prefix)
 app.include_router(realtime.router, prefix=settings.api_v1_prefix)
 
+default_origins = {
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:5174",
+}
+
+if settings.cors_allow_origins:
+    extra_origins = {origin.strip() for origin in settings.cors_allow_origins.split(",") if origin.strip()}
+    allowed_origins = sorted(default_origins.union(extra_origins))
+else:
+    allowed_origins = sorted(default_origins)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://localhost:5174",
-        "http://127.0.0.1:5173",
-        "http://127.0.0.1:5174",
-    ],
+    allow_origins=allowed_origins,
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
