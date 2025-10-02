@@ -25,12 +25,15 @@ if settings.cors_allow_origins:
 else:
     allowed_origins = sorted(default_origins)
 
+origin_regex = settings.cors_allow_origin_regex or None
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
+    allow_origin_regex=origin_regex,
 )
 
 

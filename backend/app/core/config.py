@@ -24,6 +24,7 @@ class Settings(BaseSettings):
     default_reasoning_effort: str = "medium"
     hunter_api_key: str = ""
     cors_allow_origins: str = ""
+    cors_allow_origin_regex: str = ""
 
     if ENV_FILE is not None:
         model_config = SettingsConfigDict(env_file=str(ENV_FILE), env_file_encoding="utf-8")
